@@ -1,0 +1,21 @@
+import pandas as pd
+url= 'https://pt.wikipedia.org/wiki/Quadro_de_medalhas_dos_Jogos_Ol%C3%ADmpicos_de_Ver%C3%A3o_de_2020'
+
+df = pd.read_html(url)[0]
+df.rename(columns={'Ordem':'Posicao Oficial'}, inplace=True)
+df.rename(columns={'Ordem por total':'Posicao por Medalhas'}, inplace=True)
+df.rename(columns={'País vde':'Pais'}, inplace=True)
+df.rename(columns={'Unnamed: 2':'Ouro'}, inplace=True)
+df.rename(columns={'Unnamed: 3':'Prata'}, inplace=True)
+df.rename(columns={'Unnamed: 4':'Bronze'}, inplace=True)
+df.rename(columns={'Unnamed: 5':'Total'}, inplace=True)
+df.drop(index=93, inplace=True)
+
+
+
+df['Total'] = pd.to_numeric(df['Total'])
+df = df[['Posicao Oficial','Posicao por Medalhas', 'Pais', 'Ouro', 'Prata', 'Bronze', 'Total']]
+df['% de Ouro'] = round((df['Ouro']/df['Total'])*100, 2)
+df['% de Prata'] = round((df['Prata']/df['Total'])*100, 2)
+df['% de Bronze'] = round((df['Bronze']/df['Total'])*100, 2)
+df
